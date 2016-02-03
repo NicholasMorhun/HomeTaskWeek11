@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Component
 public class LanguageDetector {
 
 	private Map<Language, List<String>> mapping;
@@ -14,13 +15,17 @@ public class LanguageDetector {
 		if (mapping == null) {
 			initMapping();
 		}
+		String firstWord = text.split(" ", 2)[0];
 		for (Language language : mapping.keySet()) {
-			//Some weird logic to detect language
+			if (mapping.get(language).contains(firstWord)) {
+                return language;
+            }
 		}
-		return Language.ENGLISH;
+        throw new RuntimeException("Cannot detect language");
 	}
 
 	private void initMapping() {
 		mapping = new HashMap<Language, List<String>>();
 	}
+
 }
